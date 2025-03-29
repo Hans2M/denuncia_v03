@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/funciones.php';
+require_once __DIR__ . '../includes/funciones.php';
 $denuncias = obtenerDenuncias();
 ?>
 <!DOCTYPE html>
