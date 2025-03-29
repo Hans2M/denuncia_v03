@@ -1,5 +1,5 @@
 <?php
-require_once '/includes/funciones.php';
+require_once '/var/www/html/includes/funciones.php';
 
 // Obtener ID de la denuncia
 $id = $_GET['id'] ?? null;
