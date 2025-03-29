@@ -1,0 +1,12 @@
+{
+    "name": "php-wrapper",
+    "version": "1.0.0",
+    "scripts": {
+        "preinstall": "apt-get update && apt-get install -y php-cli php-common",
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "php-server": "^1.0.0",
+        "concurrently": "^7.6.0"
+    }
+}
