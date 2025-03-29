@@ -1,37 +1,34 @@
 FROM php:8.0-apache
 
-# Instala gettext para envsubst y otras dependencias
+# 1. Instalar dependencias
 RUN apt-get update && apt-get install -y \
-    git \
-    zip \
-    unzip \
-    gettext-base
+    git zip unzip
 
-# Copia los archivos al contenedor
+# 2. Crear estructura de directorios necesaria
+RUN mkdir -p /var/www/html/data/uploads && \
+    mkdir -p /var/www/html/assets/img
+
+# 3. Copiar archivos con la estructura correcta
+COPY includes/ /var/www/html/includes/
 COPY public/ /var/www/html/
+COPY css/ /var/www/html/css/
+COPY js/ /var/www/html/js/
+COPY assets/img/ /var/www/html/assets/img/
+COPY data/ /var/www/html/data/
+COPY *.php /var/www/html/
+COPY .htaccess /var/www/html/
 
-# Configura Apache para usar el puerto de la variable de entorno
-RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf
+# 4. Configurar Apache
+RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf && \
+    sed -ri 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf && \
+    sed -ri 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g' /etc/apache2/sites-available/*.conf
+
+# 5. Configurar permisos
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html/data/uploads
+
+# 6. Configurar PHP para incluir tu directorio includes
+RUN echo 'include_path = ".:/usr/local/lib/php:/var/www/html/includes"' > /usr/local/etc/php/conf.d/include-path.ini
+
+# 7. Habilitar mod_rewrite para .htaccess
 RUN a2enmod rewrite
-
-# Configura el document root
-ENV APACHE_DOCUMENT_ROOT /var/www/html
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html/index.php !${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html/informacion.php!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html/denuncia.php !${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html/includes !${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html/login.php  !${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-
-# Script de entrada personalizado para manejar la variable PORT
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
-
-# Permisos
-RUN chown -R www-data:www-data /var/www/html
-
-# Comando predeterminado para iniciar Apache
-CMD ["apache2-foreground"]
