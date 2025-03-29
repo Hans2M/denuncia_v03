@@ -1,25 +1,37 @@
 FROM php:8.0-apache
 
-# Instala dependencias
+# Instala gettext para envsubst y otras dependencias
 RUN apt-get update && apt-get install -y \
-    git zip unzip
+    git \
+    zip \
+    unzip \
+    gettext-base
 
-# Copia TODOS los archivos necesarios
+# Copia los archivos al contenedor
 COPY public/ /var/www/html/
-COPY includes/ /var/www/html/includes/
 
-# Configura Apache para usar el puerto dinámico
-RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf && \
-    sed -ri 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf && \
-    sed -ri 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g' /etc/apache2/sites-available/*.conf
+# Configura Apache para usar el puerto de la variable de entorno
+RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf
+RUN a2enmod rewrite
 
 # Configura el document root
 ENV APACHE_DOCUMENT_ROOT /var/www/html
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && \
-    sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html/index.php !${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html/informacion.php!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html/denuncia.php !${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html/includes !${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html/login.php  !${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+
+# Script de entrada personalizado para manejar la variable PORT
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Permisos
 RUN chown -R www-data:www-data /var/www/html
 
-# Configura el include_path de PHP
-RUN echo 'include_path = ".:/usr/local/lib/php:/var/www/html/includes"' > /usr/local/etc/php/conf.d/include-path.ini
+# Comando predeterminado para iniciar Apache
+CMD ["apache2-foreground"]
