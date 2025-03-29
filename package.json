@@ -1,12 +1,9 @@
 {
-    "name": "php-wrapper",
-    "version": "1.0.0",
-    "scripts": {
-        "preinstall": "apt-get update && apt-get install -y php-cli php-common",
-        "start": "node server.js"
-    },
-    "dependencies": {
-        "php-server": "^1.0.0",
-        "concurrently": "^7.6.0"
-    }
+  "name": "php-wrapper",
+  "version": "1.0.0",
+  "scripts": {
+    "preinstall": "echo 'Skipping PHP installation via apt'",
+    "start": "if command -v php >/dev/null 2>&1; then php -S 0.0.0.0:$PORT -t public; else echo 'PHP not available'; exit 1; fi"
+  },
+  "dependencies": {}
 }
