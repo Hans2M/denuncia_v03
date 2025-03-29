@@ -2,8 +2,7 @@
   "name": "php-wrapper",
   "version": "1.0.0",
   "scripts": {
-    "preinstall": "echo 'Skipping PHP installation via apt'",
-    "start": "if command -v php >/dev/null 2>&1; then php -S 0.0.0.0:$PORT -t public; else echo 'PHP not available'; exit 1; fi"
+    "start": "docker run -p $PORT:80 -v $(pwd)/public:/var/www/html php:8.0-apache"
   },
   "dependencies": {}
 }
