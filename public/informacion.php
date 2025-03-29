@@ -1,6 +1,6 @@
 <?php 
-include '../includes/config.php';
-include 'header.php';
+require_once __DIR__ . '../includes/config.php';
+require_once __DIR__ . 'header.php';
 
 // Datos de las instituciones (podrían venir de una base de datos)
 $instituciones = [
