@@ -1,0 +1,250 @@
+/* Estilos generales */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* Tabla de denuncias */
+
+.denuncias-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.denuncias-table thead tr {
+    background-color: #3498db;
+    color: white;
+    text-align: left;
+}
+
+.denuncias-table th,
+.denuncias-table td {
+    padding: 12px 15px;
+}
+
+.denuncias-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.denuncias-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.denuncias-table tbody tr:last-of-type {
+    border-bottom: 2px solid #3498db;
+}
+
+.denuncias-table tbody tr:hover {
+    background-color: #f1f7fd;
+}
+
+
+/* Badges de estado */
+
+.estado-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.estado-pendiente {
+    background-color: #f39c12;
+    color: white;
+}
+
+.estado-resuelta {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.estado-rechazada {
+    background-color: #e74c3c;
+    color: white;
+}
+
+
+/* Botones de acción */
+
+.acciones-cell {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-ver {
+    background-color: #3498db;
+    color: white;
+    border: 1px solid #2980b9;
+}
+
+.btn-ver:hover {
+    background-color: #2980b9;
+}
+
+.btn-eliminar {
+    background-color: #e74c3c;
+    color: white;
+    border: 1px solid #c0392b;
+}
+
+.btn-eliminar:hover {
+    background-color: #c0392b;
+}
+
+.btn-enviar {
+    background-color: #2ecc71;
+    color: white;
+    border: 1px solid #27ae60;
+}
+
+.btn-enviar:hover {
+    background-color: #27ae60;
+}
+
+
+/* Modal para compartir */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+.social-share {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
+}
+
+.facebook {
+    background-color: #3b5998;
+}
+
+.twitter {
+    background-color: #1da1f2;
+}
+
+.whatsapp {
+    background-color: #25d366;
+}
+
+.email {
+    background-color: #3498db;
+}
+
+
+/* Botón cerrar sesión */
+
+.btn-logout {
+    display: inline-block;
+    background-color: #95a5a6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #7f8c8d;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .denuncias-table {
+        display: block;
+        overflow-x: auto;
+    }
+    .acciones-cell {
+        flex-direction: column;
+    }
+}
